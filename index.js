@@ -45,9 +45,7 @@ window.addEventListener('keypress', function(event) {
 });
 
 viewRulesButton.addEventListener('click', viewRules);
-
 viewGameButton.addEventListener('click', viewGame);
-
 viewStatsButton.addEventListener('click', updateStats);
 
 // Functions
@@ -127,7 +125,9 @@ function submitGuess() {
       setTimeout(endGame, 1000);
     }
   } else {
+    clearInvalidWord();
     errorMessage.innerText = 'Not a valid word. Try again!';
+    setTimeout(clearErrorMessage, 2000);
   }
 }
 
@@ -141,6 +141,19 @@ function checkIsWord() {
   }
 
   return apiWords.includes(guess);
+}
+
+function clearInvalidWord() {
+  for(var i = 0; i < inputs.length; i++) {
+    if(inputs[i].id.includes(`-${currentRow}-`)) {
+      inputs[i].value = '';
+    }
+  }
+  inputs[(currentRow - 1) * 5].focus();
+}
+
+function clearErrorMessage() {
+  errorMessage.innerText = '';
 }
 
 function compareGuess() {
@@ -274,7 +287,6 @@ function clearKey() {
 }
 
 // Change Page View Functions
-
 function viewRules() {
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
