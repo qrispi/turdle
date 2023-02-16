@@ -23,9 +23,12 @@ var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
 for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function(event) { 
+  inputs[i].addEventListener('keyup', function(event) {
     if (event.key !== 'Enter') {
       moveToNextInput(event);
+    }
+    if (event.key === 'Backspace') {
+      moveToLastInput(event);
     }
   });
 }
@@ -87,6 +90,14 @@ function moveToNextInput(e) {
     if (indexOfNext < 30) {
       inputs[indexOfNext].focus();
     }
+  }
+}
+
+function moveToLastInput(e) {
+  var key = e.keyCode || e.charCode;
+  var indexOfLast = parseInt(e.target.id.split('-')[2]) - 1;
+  if (indexOfLast > -1) {
+    inputs[indexOfLast].focus();
   }
 }
 
