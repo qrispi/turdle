@@ -36,7 +36,7 @@ viewRulesButton.addEventListener('click', viewRules);
 
 viewGameButton.addEventListener('click', viewGame);
 
-viewStatsButton.addEventListener('click', viewStats);
+viewStatsButton.addEventListener('click', updateStats);
 
 // Functions
 fetchWords();
@@ -187,6 +187,30 @@ function recordGameStats() {
   } else {
     gamesPlayed.push({ solved: false, guesses: currentRow });
   }
+}
+
+function updateStats() {
+  const totalGamesSpan = document.getElementById('stats-total-games');
+  const percentCorrectSpan = document.getElementById('stats-percent-correct');
+  const averageGuessesSpan = document.getElementById('stats-average-guesses');
+
+  let totalGames = gamesPlayed.length;
+  let gamesWon = 0;
+  let totalGuesses = 0;
+  gamesPlayed.forEach(game => {
+    if(game.solved) {
+      gamesWon++;
+    }
+    totalGuesses += game.guesses;
+  });
+  let averageGuesses = Math.round(totalGuesses / totalGames);
+  let percentCorrect = Math.round((gamesWon / totalGames) * 100);
+
+  totalGamesSpan.innerText = totalGames;
+  percentCorrectSpan.innerText = percentCorrect;
+  averageGuessesSpan.innerText = averageGuesses;
+
+  viewStats();
 }
 
 function changeGameOverText() {
