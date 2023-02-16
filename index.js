@@ -22,8 +22,6 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-window.addEventListener('load', setGame);
-
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
 }
@@ -47,18 +45,19 @@ function fetchWords() {
   fetch('http://localhost:3001/api/v1/words')
       .then(response => response.json())
       .then(data => apiWords = data)
-      .then(getRandomWord)
+      .then(setGame)
       .catch(error => console.log(error));
 }
 
 function setGame() {
   currentRow = 1;
+  winningWord = getRandomWord();
   updateInputPermissions();
 }
 
 function getRandomWord() {
   var randomIndex = Math.floor(Math.random() * 2500);
-  winningWord = apiWords[randomIndex];
+  return apiWords[randomIndex];
 }
 
 function updateInputPermissions() {
@@ -69,13 +68,11 @@ function updateInputPermissions() {
       inputs[i].disabled = false;
     }
   }
-
   inputs[0].focus();
 }
 
 function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
-
   if( key !== 8 && key !== 46 ) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
     inputs[indexOfNext].focus();
@@ -102,9 +99,11 @@ function submitGuess() {
     errorMessage.innerText = '';
     compareGuess();
     if (checkForWin()) {
-      setTimeout(declareWinner, 1000);
-    } else {
+      setTimeout(endGame, 1000);
+    } else if (currentRow < 6) {
       changeRow();
+    } else {
+      setTimeout(endGame, 1000);
     }
   } else {
     errorMessage.innerText = 'Not a valid word. Try again!';
@@ -175,7 +174,7 @@ function changeRow() {
   updateInputPermissions();
 }
 
-function declareWinner() {
+function endGame() {
   recordGameStats();
   changeGameOverText();
   viewGameOverMessage();
@@ -183,15 +182,25 @@ function declareWinner() {
 }
 
 function recordGameStats() {
-  gamesPlayed.push({ solved: true, guesses: currentRow });
+  if (checkForWin()) {
+    gamesPlayed.push({ solved: true, guesses: currentRow });
+  } else {
+    gamesPlayed.push({ solved: false, guesses: currentRow });
+  }
 }
 
 function changeGameOverText() {
-  gameOverGuessCount.innerText = currentRow;
-  if (currentRow < 2) {
-    gameOverGuessGrammar.classList.add('collapsed');
+  if (checkForWin()) {
+    gameOverGuessCount.innerText = currentRow;
+    if (currentRow < 2) {
+      gameOverGuessGrammar.classList.add('collapsed');
+    } else {
+      gameOverGuessGrammar.classList.remove('collapsed');
+    }
   } else {
-    gameOverGuessGrammar.classList.remove('collapsed');
+    gameOverBox.innerHTML = 
+      `<h3 id="game-over-message">GAME OVER</h1>
+      <p class="informational-text">You had 6 chances and you blew them all! Try again next time!</p>`;
   }
 }
 
