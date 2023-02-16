@@ -203,12 +203,11 @@ function updateStats() {
     }
     totalGuesses += game.guesses;
   });
-  let averageGuesses = Math.round(totalGuesses / totalGames);
-  let percentCorrect = Math.round((gamesWon / totalGames) * 100);
-
-  totalGamesSpan.innerText = totalGames;
-  percentCorrectSpan.innerText = percentCorrect;
-  averageGuessesSpan.innerText = averageGuesses;
+  if (totalGames > 0) {
+    totalGamesSpan.innerText = totalGames;
+    averageGuessesSpan.innerText = Math.round(totalGuesses / totalGames);
+    percentCorrectSpan.innerText = Math.round((gamesWon / totalGames) * 100);
+  }
 
   viewStats();
 }
@@ -225,7 +224,6 @@ function changeGameOverText() {
     gameOverBox.innerHTML = 
       `<h3 id="game-over-message">Yay!</h1>
       <p class="informational-text">You did it! It took you ${guessCount} ${guessNoun} to find the correct word.</p>`;
-    gameOverGuessCount.innerText = currentRow;
   } else {
     gameOverBox.innerHTML = 
       `<h3 id="game-over-message">GAME OVER</h1>
