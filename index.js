@@ -215,12 +215,17 @@ function updateStats() {
 
 function changeGameOverText() {
   if (checkForWin()) {
-    gameOverGuessCount.innerText = currentRow;
+    let guessCount = currentRow;
+    let guessNoun;
     if (currentRow < 2) {
-      gameOverGuessGrammar.classList.add('collapsed');
+      guessNoun = 'guess';
     } else {
-      gameOverGuessGrammar.classList.remove('collapsed');
+      guessNoun = 'guesses';
     }
+    gameOverBox.innerHTML = 
+      `<h3 id="game-over-message">Yay!</h1>
+      <p class="informational-text">You did it! It took you ${guessCount} ${guessNoun} to find the correct word.</p>`;
+    gameOverGuessCount.innerText = currentRow;
   } else {
     gameOverBox.innerHTML = 
       `<h3 id="game-over-message">GAME OVER</h1>
