@@ -3,6 +3,7 @@ var winningWord = '';
 var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
+let apiWords;
 
 // Query Selectors
 var inputs = document.querySelectorAll('input');
@@ -40,15 +41,24 @@ viewGameButton.addEventListener('click', viewGame);
 viewStatsButton.addEventListener('click', viewStats);
 
 // Functions
+fetchWords();
+
+function fetchWords() {
+  fetch('http://localhost:3001/api/v1/words')
+      .then(response => response.json())
+      .then(data => apiWords = data)
+      .then(getRandomWord)
+      .catch(error => console.log(error));
+}
+
 function setGame() {
   currentRow = 1;
-  winningWord = getRandomWord();
   updateInputPermissions();
 }
 
 function getRandomWord() {
   var randomIndex = Math.floor(Math.random() * 2500);
-  return words[randomIndex];
+  winningWord = apiWords[randomIndex];
 }
 
 function updateInputPermissions() {
@@ -110,7 +120,7 @@ function checkIsWord() {
     }
   }
 
-  return words.includes(guess);
+  return apiWords.includes(guess);
 }
 
 function compareGuess() {
