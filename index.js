@@ -68,7 +68,7 @@ function updateInputPermissions() {
       inputs[i].disabled = false;
     }
   }
-  inputs[0].focus();
+  inputs[(currentRow - 1) * 5].focus();
 }
 
 function moveToNextInput(e) {
@@ -82,7 +82,6 @@ function moveToNextInput(e) {
 function clickLetter(e) {
   var activeInput = null;
   var activeIndex = null;
-
   for (var i = 0; i < inputs.length; i++) {
     if(inputs[i].id.includes(`-${currentRow}-`) && !inputs[i].value && !activeInput) {
       activeInput = inputs[i];
