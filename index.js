@@ -75,7 +75,9 @@ function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
   if( key !== 8 && key !== 46 ) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
-    inputs[indexOfNext].focus();
+    if (indexOfNext < 30) {
+      inputs[indexOfNext].focus();
+    }
   }
 }
 
