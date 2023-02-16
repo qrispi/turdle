@@ -23,7 +23,11 @@ var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
 for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
+  inputs[i].addEventListener('keyup', function(event) { 
+    if (event.key !== 'Enter') {
+      moveToNextInput(event);
+    }
+  });
 }
 
 for (var i = 0; i < keyLetters.length; i++) {
@@ -31,6 +35,11 @@ for (var i = 0; i < keyLetters.length; i++) {
 }
 
 guessButton.addEventListener('click', submitGuess);
+window.addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    submitGuess()
+  }
+});
 
 viewRulesButton.addEventListener('click', viewRules);
 
