@@ -22,28 +22,10 @@ var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
-for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function(event) {
-    if (event.key !== 'Enter') {
-      moveToNextInput(event);
-    }
-    if (event.key === 'Backspace') {
-      moveToLastInput(event);
-    }
-  });
-}
-
-for (var i = 0; i < keyLetters.length; i++) {
-  keyLetters[i].addEventListener('click', function() { clickLetter(event) });
-}
-
+inputs.forEach(input => input.addEventListener('keyup', (event) => event.key === 'Backspace' ? moveToLastInput(event) : moveToNextInput(event)));
+keyLetters.forEach(letter => letter.addEventListener('click', clickLetter));
 guessButton.addEventListener('click', submitGuess);
-window.addEventListener('keypress', function(event) {
-  if (event.key === 'Enter') {
-    submitGuess()
-  }
-});
-
+window.addEventListener('keypress', (event) => event.key === 'Enter' ? submitGuess() : null);
 viewRulesButton.addEventListener('click', viewRules);
 viewGameButton.addEventListener('click', viewGame);
 viewStatsButton.addEventListener('click', fetchStats);
@@ -83,7 +65,7 @@ function updateInputPermissions() {
 
 function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
-  if( key !== 8 && key !== 46 ) {
+  if( key !== 8 && key !== 46 && key !== 13) {
     var indexOfNext = parseInt(e.target.id.split('-')[2]) + 1;
     if (indexOfNext < 30) {
       inputs[indexOfNext].focus();
