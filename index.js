@@ -46,7 +46,7 @@ window.addEventListener('keypress', function(event) {
 
 viewRulesButton.addEventListener('click', viewRules);
 viewGameButton.addEventListener('click', viewGame);
-viewStatsButton.addEventListener('click', updateStats);
+viewStatsButton.addEventListener('click', fetchStats);
 
 // Functions
 fetchWords();
@@ -216,11 +216,24 @@ function endGame() {
 }
 
 function recordGameStats() {
-  if (checkForWin()) {
-    gamesPlayed.push({ solved: true, guesses: currentRow });
-  } else {
-    gamesPlayed.push({ solved: false, guesses: currentRow });
-  }
+  fetch('http://localhost:3001/api/v1/games', {
+    method: 'POST',
+    body: JSON.stringify({solved: checkForWin(), guesses: currentRow}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(json => console.log(json.message))
+    .catch(error => console.log(error));
+}
+
+function fetchStats() {
+  fetch('http://localhost:3001/api/v1/games')
+    .then(response => response.json())
+    .then(json => gamesPlayed = json)
+    .then(updateStats)
+    .catch(error => console.log(error));
 }
 
 function updateStats() {
@@ -235,7 +248,7 @@ function updateStats() {
     if(game.solved) {
       gamesWon++;
     }
-    totalGuesses += game.guesses;
+    totalGuesses += game.numGuesses;
   });
   if (totalGames > 0) {
     totalGamesSpan.innerText = totalGames;
