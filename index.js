@@ -1,25 +1,25 @@
 // Global Variables
-var winningWord = '';
-var currentRow = 1;
-var guess = '';
-var gamesPlayed = [];
+let winningWord = '';
+let currentRow = 1;
+let guess = '';
+let gamesPlayed = [];
 let apiWords;
 
 // Query Selectors
-var inputs = document.querySelectorAll('input');
-var guessButton = document.querySelector('#guess-button');
-var keyLetters = document.querySelectorAll('span');
-var errorMessage = document.querySelector('#error-message');
-var viewRulesButton = document.querySelector('#rules-button');
-var viewGameButton = document.querySelector('#play-button');
-var viewStatsButton = document.querySelector('#stats-button');
-var gameBoard = document.querySelector('#game-section');
-var letterKey = document.querySelector('#key-section');
-var rules = document.querySelector('#rules-section');
-var stats = document.querySelector('#stats-section');
-var gameOverBox = document.querySelector('#game-over-section');
-var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
-var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
+const inputs = document.querySelectorAll('input');
+const guessButton = document.querySelector('#guess-button');
+const keyLetters = document.querySelectorAll('span');
+const errorMessage = document.querySelector('#error-message');
+const viewRulesButton = document.querySelector('#rules-button');
+const viewGameButton = document.querySelector('#play-button');
+const viewStatsButton = document.querySelector('#stats-button');
+const gameBoard = document.querySelector('#game-section');
+const letterKey = document.querySelector('#key-section');
+const rules = document.querySelector('#rules-section');
+const stats = document.querySelector('#stats-section');
+const gameOverBox = document.querySelector('#game-over-section');
+const gameOverGuessCount = document.querySelector('#game-over-guesses-count');
+const gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
 // Event Listeners
 inputs.forEach(input => input.addEventListener('keyup', (event) => event.key === 'Backspace' ? moveToLastInput(event) : moveToNextInput(event)));
@@ -48,7 +48,7 @@ function setGame() {
 }
 
 function getRandomWord() {
-  var randomIndex = Math.floor(Math.random() * 2500);
+  let randomIndex = Math.floor(Math.random() * 2500);
   return apiWords[randomIndex];
 }
 
