@@ -269,12 +269,13 @@ function changeGameOverText() {
       guessNoun = 'guesses';
     }
     gameOverBox.innerHTML = 
-      `<h3 id="game-over-message">Yay!</h1>
+      `<h3>Yay!</h3>
       <p class="informational-text">You did it! It took you ${guessCount} ${guessNoun} to find the correct word.</p>`;
   } else {
     gameOverBox.innerHTML = 
-      `<h3 id="game-over-message">GAME OVER</h1>
-      <p class="informational-text">You had 6 chances and you blew them all! Try again next time!</p>`;
+      `<h3>GAME OVER</h3>
+      <p class="informational-text">You had 6 chances and you blew them all! Try again next time!</p>
+      <h3>The word was: ${winningWord}</h3>`;
   }
 }
 
